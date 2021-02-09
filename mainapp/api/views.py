@@ -49,15 +49,27 @@ class CartViewSet(viewsets.ViewSet):
         serializer = CartSerializer(carts, many=True)
         return Response(serializer.data)
 
-    # def create(self, request):
-    #     serializer = ProductSerializer(data=request.data)
-    #     serializer.is_valid(raise_exception=True)
-    #     serializer.save()
-    #     return Response(serializer.data, status=status.HTTP_201_CREATED)
+    def retrieve(self, request, pk=None):
+        cart = Cart.objects.get(id=pk)
+        serializer = CartSerializer(cart)
+        return Response(serializer.data)
+
+    def destroy(self, request, pk=None):
+        cart_product = CartProduct.objects.get(id=pk)
+        cart_product.delete()
+        return Response(status=status.HTTP_204_NO_CONTENT)
+
+
+class CartProductViewSet(viewsets.ViewSet):
+
+    def list(self, request):
+        cartProducts = CartProduct.objects.all()
+        serializer = CartProductSerializer(cartProducts, many=True)
+        return Response(serializer.data)
 
     def retrieve(self, request, pk=None):
-        cart_product = CartProduct.objects.get(id=pk)
-        serializer = CartProductSerializer(cart_product)
+        cartProduct = CartProduct.objects.get(id=pk)
+        serializer = CartProductSerializer(cartProduct)
         return Response(serializer.data)
 
     # def update(self, request, pk=None):

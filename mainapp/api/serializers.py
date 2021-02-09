@@ -71,6 +71,8 @@ class ProductListRetrieveSerializer(serializers.ModelSerializer): #что ото
 
 class CustomerSerializer(serializers.ModelSerializer):
 
+    # order =
+
     class Meta:
         model = Customer
         fields = '__all__'
@@ -78,7 +80,9 @@ class CustomerSerializer(serializers.ModelSerializer):
 
 class CartProductSerializer(serializers.ModelSerializer):
 
-    # product = ProductSerializer()
+    product = ProductSerializer()
+    user = CustomerSerializer()
+    # cart = CartSerializer()
 
     class Meta:
         model = CartProduct
