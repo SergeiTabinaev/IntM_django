@@ -71,6 +71,7 @@ class ProductListRetrieveSerializer(serializers.ModelSerializer): #что ото
 
 class CustomerSerializer(serializers.ModelSerializer):
 
+    # user = serializers.PrimaryKeyRelatedField(read_only=True)
     # order =
 
     class Meta:

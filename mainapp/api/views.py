@@ -1,16 +1,22 @@
+from django.http import HttpResponseRedirect
 from rest_framework import viewsets
+from rest_framework.status import HTTP_400_BAD_REQUEST
+
 from .serializers import (
     ProductSerializer,
     CategorySerializer,
     ProductListRetrieveSerializer,
     CategoryDetailSerializer, CartProductSerializer, CartSerializer, CustomerSerializer)
+from ..mixins import CartMixin
 from ..models import Category, Product, Cart, CartProduct, Customer
 
 from rest_framework import viewsets, status
 from rest_framework.response import Response
 
+from ..utils import recalc_cart
 
-class CategoryViewSet(viewsets.ModelViewSet):
+
+class CategoryViewSet(CartMixin, viewsets.ModelViewSet): #,
 
     queryset = Category.objects.all()
     serializer_class = CategorySerializer
@@ -26,7 +32,7 @@ class CategoryViewSet(viewsets.ModelViewSet):
         )
 
 
-class ProductViewSet(viewsets.ModelViewSet):
+class ProductViewSet(CartMixin, viewsets.ModelViewSet): #
 
     queryset = Product.objects.all()
     serializer_class = ProductSerializer
@@ -42,7 +48,8 @@ class ProductViewSet(viewsets.ModelViewSet):
             self.serializer_class
         )
 
-class CartViewSet(viewsets.ViewSet):
+
+class CartViewSet(CartMixin, viewsets.ViewSet): #
 
     def list(self, request):
         carts = Cart.objects.all()
@@ -60,7 +67,7 @@ class CartViewSet(viewsets.ViewSet):
         return Response(status=status.HTTP_204_NO_CONTENT)
 
 
-class CartProductViewSet(viewsets.ViewSet):
+class CartProductViewSet(CartMixin, viewsets.ViewSet): #,
 
     def list(self, request):
         cartProducts = CartProduct.objects.all()
@@ -72,14 +79,36 @@ class CartProductViewSet(viewsets.ViewSet):
         serializer = CartProductSerializer(cartProduct)
         return Response(serializer.data)
 
-    # def update(self, request, pk=None):
-    #     product = Product.objects.get(id=pk)
-    #     serializer = ProductSerializer(instance=product, data=request.data)
-    #     serializer.is_valid(raise_exception=True)
-    #     serializer.save()
-    #     return Response(serializer.data, status=status.HTTP_202_ACCEPTED)
-
     def destroy(self, request, pk=None):
         cart_product = CartProduct.objects.get(id=pk)
         cart_product.delete()
         return Response(status=status.HTTP_204_NO_CONTENT)
+
+    # class ChangeQTYView(CartMixin, View):
+    #
+    #     def post(self, request, *args, **kwargs):
+    #         product_slug = kwargs.get('slug')
+    #         product = Product.objects.get(slug=product_slug)
+    #         cart_product = CartProduct.objects.get(
+    #             user=self.cart.owner, cart=self.cart, product=product
+    #         )
+    #         qty = int(request.POST.get('qty'))
+    #         cart_product.qty = qty
+    #         cart_product.save()
+    #         recalc_cart(self.cart)
+    #         messages.add_message(request, messages.INFO, "Кол-во успешно изменено")
+    #         return HttpResponseRedirect('/cart/')
+
+
+class AddToCartViewSet(CartMixin, viewsets.ViewSet):
+
+    def retrieve(self, request, *args, **kwargs):
+        product_slug = kwargs.get('slug')
+        product = Product.objects.get(slug=product_slug)
+        cart_product, created = CartProduct.objects.get_or_create(
+            user=self.cart.owner, cart=self.cart, product=product
+        )
+        if created:
+            self.cart.products.add(cart_product)
+        recalc_cart(self.cart)
+        return Response(status=status.HTTP_201_CREATED)
