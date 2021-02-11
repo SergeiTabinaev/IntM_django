@@ -10,7 +10,6 @@ urlpatterns = [
     path('auth/', include('djoser.urls')),  # регистрация авторизация
     path('auth/', include('djoser.urls.authtoken')),  # регистрация авторизация (токены сохраняются в БД)
 
-    path('', include('mainapp.urls')),
     path('product-specs/', include('specs.urls')),
     path('api/', include('mainapp.api.urls')),
 
