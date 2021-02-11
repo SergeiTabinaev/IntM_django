@@ -3,10 +3,13 @@
 API для интернет магазина, фронт на React https://github.com/SergeiTabinaev/IntM_react
 
 Что еще в работе: 
+
   API для заказа товаров (Order)
 
 Использованы следующие технологии: 
-    Django REST framework
+
+    Django REST framework,
+    
     Авторизация и регистрация сделана с библиотекой djoser
 
 Как использовать:
