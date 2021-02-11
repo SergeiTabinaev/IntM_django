@@ -29,20 +29,20 @@ INSTALLED_APPS = [
     'django.contrib.staticfiles',
 
     'rest_framework',
-    'rest_framework.authtoken',
-    'djoser',
+    'rest_framework.authtoken',  # авторизация и регистрация (получение токенов (сохр в бд))
+    'djoser',  # авторизация и регистрация
     'drf_yasg',
     'corsheaders',
 
     'mainapp',
-    'specs',
+    'specs', #приложение админка (добавление характеристик и значений товаров категорий)
 
 ]
 
 MIDDLEWARE = [
     'django.middleware.security.SecurityMiddleware',
     'django.contrib.sessions.middleware.SessionMiddleware',
-    'corsheaders.middleware.CorsMiddleware',
+    'corsheaders.middleware.CorsMiddleware',                  # CORS прослойка
     'django.middleware.common.CommonMiddleware',
     'django.middleware.csrf.CsrfViewMiddleware',
     'django.contrib.auth.middleware.AuthenticationMiddleware',
@@ -136,6 +136,7 @@ REST_FRAMEWORK = {
 }
 
 
+#авторизация и регистрация
 DJOSER = {
     'PASSWORD_RESET_CONFIRM_URL': '#/password/reset/confirm/{uid}/{token}',
     'USERNAME_RESET_CONFIRM_URL': '#/username/reset/confirm/{uid}/{token}',
@@ -145,6 +146,7 @@ DJOSER = {
 }
 
 
+# разрешенные урлы для запроса на этот api
 CORS_ORIGIN_WHITELIST = [
     "http://localhost:8080",
     "http://localhost:3000",

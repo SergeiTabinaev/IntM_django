@@ -2,6 +2,7 @@ from django.db import models
 
 
 class CategoryFeature(models.Model):
+    """ модель привязки характеристик к категории """
 
     category = models.ForeignKey("mainapp.Category", verbose_name='Категория', on_delete=models.CASCADE)
     feature_name = models.CharField(verbose_name='Имя ключа для категории', max_length=50)
@@ -28,6 +29,7 @@ class FeatureValidator(models.Model):
 
 
 class ProductFeatures(models.Model):
+    """ модель привязки характеристик к категории """
 
     product = models.ForeignKey("mainapp.Product", verbose_name='Товар', on_delete=models.CASCADE)
     feature = models.ForeignKey(CategoryFeature, verbose_name='Характеристика', on_delete=models.CASCADE)

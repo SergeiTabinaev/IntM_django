@@ -2,7 +2,7 @@ from django.views.generic import View
 
 from .models import Cart, Customer
 
-
+# Логика определения пользователя корзины, либо присваивания пользователю значения - анонимный пользователь
 class CartMixin(View):
 
     def dispatch(self, request, *args, **kwargs):

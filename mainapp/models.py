@@ -8,6 +8,7 @@ User = get_user_model()
 
 
 class Category(models.Model):
+    """ модель категорий товаров """
 
     name = models.CharField(max_length=255, verbose_name='Имя категории')
     slug = models.SlugField(unique=True)
@@ -20,6 +21,7 @@ class Category(models.Model):
 
 
 class Product(models.Model):
+    """ модель товаров """
 
     category = models.ForeignKey(Category, verbose_name='Категория', on_delete=models.CASCADE)
     title = models.CharField(max_length=255, verbose_name='Наименование')
@@ -35,11 +37,13 @@ class Product(models.Model):
     def get_absolute_url(self):
         return reverse('product_detail', kwargs={'slug': self.slug})
 
+
     def get_features(self):
         return {f.feature.feature_name: ' '.join([f.value, f.feature.unit or ""]) for f in self.features.all()}
 
 
 class CartProduct(models.Model):
+    """ модель товаров в корзине """
 
     user = models.ForeignKey('Customer', verbose_name='Покупатель', on_delete=models.CASCADE)
     cart = models.ForeignKey('Cart', verbose_name='Корзина', on_delete=models.CASCADE, related_name='related_products')
@@ -56,6 +60,7 @@ class CartProduct(models.Model):
 
 
 class Cart(models.Model):
+    """ модель корзины """
 
     owner = models.ForeignKey('Customer', null=True, verbose_name='Владелец', on_delete=models.CASCADE)
     products = models.ManyToManyField(CartProduct, blank=True, related_name='related_cart')
@@ -69,6 +74,7 @@ class Cart(models.Model):
 
 
 class Customer(models.Model):
+    """ модель пользователя """
 
     user = models.ForeignKey(User, verbose_name='Пользователь', on_delete=models.CASCADE)
     phone = models.CharField(max_length=20, verbose_name='Номер телефона', null=True, blank=True)
@@ -80,6 +86,7 @@ class Customer(models.Model):
 
 
 class Order(models.Model):
+    """ модель заказов """
 
     STATUS_NEW = 'new'
     STATUS_IN_PROGRESS = 'in_progress'

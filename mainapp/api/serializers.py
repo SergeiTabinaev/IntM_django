@@ -1,7 +1,7 @@
 from rest_framework import serializers
 
 from ..models import Product, Category, Cart, CartProduct, Customer
-from specs.models import ProductFeatures, CategoryFeature
+from specs.models import ProductFeatures, CategoryFeature  # модели создания характеристик категорий, характеристик и значений товаров
 
 
 class CategoryFeatureSerializer(serializers.ModelSerializer):
@@ -54,7 +54,7 @@ class ProductSerializer(serializers.ModelSerializer):
         fields = '__all__'
 
 
-class ProductListRetrieveSerializer(serializers.ModelSerializer): #что отображалость полная инфа
+class ProductListRetrieveSerializer(serializers.ModelSerializer): #чтоб отображалость полная инфа
 
     category = CategorySerializer()
     features = serializers.SerializerMethodField()
@@ -71,7 +71,7 @@ class ProductListRetrieveSerializer(serializers.ModelSerializer): #что ото
 
 class CustomerSerializer(serializers.ModelSerializer):
 
-    # user = serializers.PrimaryKeyRelatedField(read_only=True)
+    user = serializers.PrimaryKeyRelatedField(read_only=True)
     # order =
 
     class Meta:

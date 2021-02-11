@@ -2,13 +2,13 @@ from django.contrib import admin
 from django.urls import path, include
 from django.conf import settings
 from django.conf.urls.static import static
-from .yasg import urlpatterns as doc_urls
+from .yasg import urlpatterns as doc_urls  # Автодокументирование
 
 
 urlpatterns = [
     path('admin/', admin.site.urls),
-    path('auth/', include('djoser.urls')),
-    path('auth/', include('djoser.urls.authtoken')),
+    path('auth/', include('djoser.urls')),  # регистрация авторизация
+    path('auth/', include('djoser.urls.authtoken')),  # регистрация авторизация (токены сохраняются в БД)
 
     path('', include('mainapp.urls')),
     path('product-specs/', include('specs.urls')),
