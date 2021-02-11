@@ -3,8 +3,8 @@
 API для интернет магазина, фронт на React https://github.com/SergeiTabinaev/IntM_react
 
 Что еще в работе: 
-
-  API для заказа товаров (Order)
+  
+     api для заказа товаров (Order)
 
 Использованы следующие технологии: 
 
