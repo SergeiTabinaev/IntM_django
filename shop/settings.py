@@ -76,8 +76,12 @@ WSGI_APPLICATION = 'shop.wsgi.application'
 
 DATABASES = {
     'default': {
-        'ENGINE': 'django.db.backends.sqlite3',
-        'NAME': os.path.join(BASE_DIR, 'db.sqlite3'),
+        'ENGINE': 'django.db.backends.postgresql_psycopg2',
+        'NAME': 'IntM',
+        'USER': 'postgres',
+        'PASSWORD': 'initeb53',
+        'HOST': 'localhost',
+        'PORT': '5432',
     }
 }
 
@@ -132,7 +136,12 @@ STATICFILES_DIRS = (
 REST_FRAMEWORK = {
     'DEFAULT_AUTHENTICATION_CLASSES': (
         'rest_framework.authentication.TokenAuthentication', #обычные токены с записью в бд
+        'rest_framework.authentication.BasicAuthentication',
+        'rest_framework.authentication.SessionAuthentication',
     ),
+    # 'DEFAULT_PERMISSION_CLASSES': (
+    #             'rest_framework.permissions.IsAuthenticated',
+    #     ),
 }
 
 
@@ -154,3 +163,5 @@ CORS_ORIGIN_WHITELIST = [
     "http://127.0.0.1:3000",
     "http://localhost:1313",
 ]
+
+AUTH_USER_MODEL = 'mainapp.UserApp'

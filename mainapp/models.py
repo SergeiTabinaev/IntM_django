@@ -1,10 +1,13 @@
 from django.db import models
+from django.contrib.auth.models import AbstractUser
 from django.contrib.auth import get_user_model
-from django.contrib.contenttypes.models import ContentType
 from django.urls import reverse
 from django.utils import timezone
 
-User = get_user_model()
+# User = get_user_model()
+class UserApp(AbstractUser):
+    id = models.AutoField(primary_key=True, unique=True)
+    username = models.CharField(max_length=50, unique=True)
 
 
 class Category(models.Model):
@@ -76,7 +79,7 @@ class Cart(models.Model):
 class Customer(models.Model):
     """ модель пользователя """
 
-    user = models.ForeignKey(User, verbose_name='Пользователь', on_delete=models.CASCADE)
+    user = models.ForeignKey(UserApp, verbose_name='Пользователь', on_delete=models.CASCADE)
     phone = models.CharField(max_length=20, verbose_name='Номер телефона', null=True, blank=True)
     address = models.CharField(max_length=255, verbose_name='Адрес', null=True, blank=True)
     orders = models.ManyToManyField('Order', verbose_name='Заказы покупателя', related_name='related_order')

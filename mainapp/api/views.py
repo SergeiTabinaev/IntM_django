@@ -95,7 +95,7 @@ class AddToCartViewSet(CartMixin, APIView):
         product_slug = kwargs.get('slug')
         product = Product.objects.get(slug=product_slug)
         cart_product, created = CartProduct.objects.get_or_create(
-            user=self.cart.owner, cart=self.cart, product=product
+            user=self.cart.owner or request.user, cart=self.cart, product=product
         )
         if created:
             self.cart.products.add(cart_product)
