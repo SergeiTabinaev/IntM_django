@@ -1,3 +1,4 @@
+from datetime import timedelta
 from pathlib import Path
 import os
 
@@ -29,14 +30,15 @@ INSTALLED_APPS = [
     'django.contrib.staticfiles',
 
     'rest_framework',
-    'rest_framework.authtoken',  # авторизация и регистрация (получение токенов (сохр в бд))
+    'rest_framework_simplejwt',
+    # 'rest_framework.authtoken',  # авторизация и регистрация (получение токенов (сохр в бд))
     'djoser',  # авторизация и регистрация
     'drf_yasg',
     'corsheaders',
 
     'mainapp',
     'specs', #приложение админка (добавление характеристик и значений товаров категорий)
-
+    'crispy_forms'
 ]
 
 MIDDLEWARE = [
@@ -132,16 +134,32 @@ STATICFILES_DIRS = (
     os.path.join(BASE_DIR, 'static_dev'),
 )
 
+CRISPY_TEMPLATE_PACK = 'bootstrap4'
 
 REST_FRAMEWORK = {
     'DEFAULT_AUTHENTICATION_CLASSES': (
-        'rest_framework.authentication.TokenAuthentication', #обычные токены с записью в бд
-        'rest_framework.authentication.BasicAuthentication',
-        'rest_framework.authentication.SessionAuthentication',
+        'rest_framework_simplejwt.authentication.JWTAuthentication',
+        # 'rest_framework.authentication.TokenAuthentication', #обычные токены с записью в бд
+        # 'rest_framework.authentication.BasicAuthentication',
+        # 'rest_framework.authentication.SessionAuthentication',
     ),
-    # 'DEFAULT_PERMISSION_CLASSES': (
-    #             'rest_framework.permissions.IsAuthenticated',
-    #     ),
+    'DEFAULT_PERMISSION_CLASSES': (
+                'rest_framework.permissions.IsAuthenticatedOrReadOnly',
+        ),
+}
+
+AUTHENTICATION_BACKENDS = (
+    'django.contrib.auth.backends.ModelBackend',
+)
+
+SIMPLE_JWT = {
+    'AUTH_HEADER_TYPES': ('JWT',),
+
+    'ACCESS_TOKEN_LIFETIME': timedelta(minutes=60),
+    'REFRESH_TOKEN_LIFETIME': timedelta(days=1),
+    'AUTH_TOKEN_CLASSES': (
+        'rest_framework_simplejwt.tokens.AccessToken',
+    ),
 }
 
 
